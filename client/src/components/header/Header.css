@@ -1,0 +1,17 @@
+/* Header.css */
+.AppBar {
+    background: linear-gradient(90deg, rgba(0, 150, 255, 0.8), rgba(0, 204, 255, 0.8)); /* Gradient for a dynamic look */
+  }
+  
+  .MuiButton-root {
+    color: #fff; /* Button text color */
+  }
+  
+  .MuiButton-root:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+  }
+  
+  .MuiMenuItem-root:hover {
+    background-color: rgba(0, 150, 255, 0.1); /* Highlight for menu items */
+  }
+  

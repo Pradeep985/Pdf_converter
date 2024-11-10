@@ -1,0 +1,15 @@
+.footer {
+    background-color: #f8f8f8; /* Background color */
+    padding: 20px 0; /* Padding */
+    margin-top: 40px; /* Margin top */
+  }
+  
+  .footer a {
+    color: #3f51b5; /* Link color */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .footer a:hover {
+    text-decoration: underline; /* Underline on hover */
+  }
+  
