@@ -110,92 +110,12 @@ const UploaderPage = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: '.pdf' });
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: '100px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: 2 }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Upload Your PDF to Split
+    <Container maxWidth="md" sx={{ marginTop: '50px', padding: '30px', backgroundColor: '#fff', borderRadius: '10px', boxShadow: 3 }}>
+      <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+        PDF Splitter & Extractor
       </Typography>
 
-      <Box sx={{ mb: 3 }} >
-        <TextField
-          select
-          label="Select Mode"
-          value={splitMode}
-          onChange={(e) => setSplitMode(e.target.value)}
-          fullWidth
-        >
-          <MenuItem value="splitByRange">Split by Range</MenuItem>
-          <MenuItem value="extractPages">Extract Pages</MenuItem>
-        </TextField>
-      </Box>
-
-      {splitMode === 'splitByRange' && (
-        <>
-          <Box sx={{ mb: 3 }}>
-            <TextField
-              select
-              label="Range Mode"
-              value={rangeMode}
-              onChange={(e) => setRangeMode(e.target.value)}
-              fullWidth
-            >
-              <MenuItem value="custom">Custom Ranges</MenuItem>
-              <MenuItem value="fixed">Fixed Ranges</MenuItem>
-            </TextField>
-          </Box>
-
-          {rangeMode === 'custom' ? (
-            <>
-              {customRanges.map((range, index) => (
-                <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                  <TextField
-                    label="From Page"
-                    type="number"
-                    value={range.from}
-                    onChange={(e) => {
-                      const newRanges = [...customRanges];
-                      newRanges[index].from = parseInt(e.target.value, 10);
-                      setCustomRanges(newRanges);
-                    }}
-                    fullWidth
-                  />
-                  <TextField
-                    label="To Page"
-                    type="number"
-                    value={range.to}
-                    onChange={(e) => {
-                      const newRanges = [...customRanges];
-                      newRanges[index].to = parseInt(e.target.value, 10);
-                      setCustomRanges(newRanges);
-                    }}
-                    fullWidth
-                  />
-                </Box>
-              ))}
-              <Button onClick={handleAddRange}>Add Range</Button>
-            </>
-          ) : (
-            <TextField
-              label="Fixed Range Count"
-              type="number"
-              value={fixedRangeCount}
-              onChange={(e) => setFixedRangeCount(parseInt(e.target.value, 10))}
-              fullWidth
-              sx={{ mb: 3 }}
-            />
-          )}
-        </>
-      )}
-
-      {splitMode === 'extractPages' && (
-        <TextField
-          label="Pages to Extract (comma-separated)"
-          value={pagesToExtract}
-          onChange={(e) => setPagesToExtract(e.target.value)}
-          fullWidth
-          sx={{ mb: 3 }}
-        />
-      )}
-
+      {/* File Upload and Drag-and-Drop */}
       <Box {...getRootProps()} sx={{
         border: '2px dashed #3f51b5',
         padding: '40px',
@@ -204,19 +124,18 @@ const UploaderPage = () => {
         backgroundColor: isDragActive ? '#e3f2fd' : '#f5f5f5',
         marginBottom: '20px',
         transition: 'background-color 0.3s ease',
+        textAlign: 'center',
       }}>
         <input {...getInputProps()} />
         {isDragActive ? (
-          <Typography>Drop the files here ...</Typography>
+          <Typography sx={{ color: '#3f51b5', fontWeight: 'bold' }}>Drop the files here ...</Typography>
         ) : (
-          <Typography>
-            Drag and drop a file here, or click to select a file
-          </Typography>
+          <Typography sx={{ color: '#616161' }}>Drag and drop a file here, or click to select a file</Typography>
         )}
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-        <Button variant="contained" component="label">
+      <Box sx={{ display: 'flex', mb: 3 }}>
+        <Button variant="contained" component="label" sx={{ backgroundColor: '#3f51b5', color: 'white', '&:hover': { backgroundColor: '#303f9f' } }}>
           Select File
           <input type="file" hidden onChange={handleFileChange} accept=".pdf" />
         </Button>
@@ -228,20 +147,125 @@ const UploaderPage = () => {
         )}
       </Box>
 
-      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSplit}
-          disabled={!file || loading}
-          sx={{ width: '80px', mr: 1 }}
-        >
-          {loading ? <CircularProgress size={24} /> : 'Split'}
-        </Button>
-        <Button variant="outlined" onClick={() => setFile(null)} sx={{ width: '80px' }}>
-          Cancel
-        </Button>
-      </Box>
+      {/* Only display when a file is uploaded */}
+      {file && (
+        <>
+          <Box sx={{ mb: 3 }}>
+            <TextField
+              select
+              label="Select Mode"
+              value={splitMode}
+              onChange={(e) => setSplitMode(e.target.value)}
+              fullWidth
+              sx={{
+                '& .MuiInputBase-root': { backgroundColor: '#f1f1f1' },
+                '& .MuiOutlinedInput-notchedOutline': { borderColor: '#3f51b5' }
+              }}
+            >
+              <MenuItem value="splitByRange">Split by Range</MenuItem>
+              <MenuItem value="extractPages">Extract Pages</MenuItem>
+            </TextField>
+          </Box>
+
+          {splitMode === 'splitByRange' && (
+            <>
+              <Box sx={{ mb: 3 }}>
+                <TextField
+                  select
+                  label="Range Mode"
+                  value={rangeMode}
+                  onChange={(e) => setRangeMode(e.target.value)}
+                  fullWidth
+                  sx={{
+                    '& .MuiInputBase-root': { backgroundColor: '#f1f1f1' },
+                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#3f51b5' }
+                  }}
+                >
+                  <MenuItem value="custom">Custom Ranges</MenuItem>
+                  <MenuItem value="fixed">Fixed Ranges</MenuItem>
+                </TextField>
+              </Box>
+
+              {rangeMode === 'custom' ? (
+                <>
+                  {customRanges.map((range, index) => (
+                    <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                      <TextField
+                        label="From Page"
+                        type="number"
+                        value={range.from}
+                        onChange={(e) => {
+                          const newRanges = [...customRanges];
+                          newRanges[index].from = parseInt(e.target.value, 10);
+                          setCustomRanges(newRanges);
+                        }}
+                        fullWidth
+                        sx={{ backgroundColor: '#f1f1f1' }}
+                      />
+                      <TextField
+                        label="To Page"
+                        type="number"
+                        value={range.to}
+                        onChange={(e) => {
+                          const newRanges = [...customRanges];
+                          newRanges[index].to = parseInt(e.target.value, 10);
+                          setCustomRanges(newRanges);
+                        }}
+                        fullWidth
+                        sx={{ backgroundColor: '#f1f1f1' }}
+                      />
+                    </Box>
+                  ))}
+                  <Button variant="outlined" onClick={handleAddRange} sx={{ backgroundColor: '#3f51b5', color: 'white', '&:hover': { backgroundColor: '#303f9f' } }}>
+                    Add Range
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <TextField
+                    label="Fixed Range Size"
+                    type="number"
+                    value={fixedRangeCount}
+                    onChange={(e) => setFixedRangeCount(parseInt(e.target.value, 10))}
+                    fullWidth
+                    sx={{ backgroundColor: '#f1f1f1', mt: 2 }}
+                  />
+                </>
+              )}
+            </>
+          )}
+
+          {splitMode === 'extractPages' && (
+            <Box sx={{ mb: 3 }}>
+              <TextField
+                label="Pages to Extract (comma separated)"
+                value={pagesToExtract}
+                onChange={(e) => setPagesToExtract(e.target.value)}
+                fullWidth
+                sx={{ backgroundColor: '#f1f1f1' }}
+              />
+            </Box>
+          )}
+
+          {/* Start splitting button */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 ,paddingTop: "10px"}}>
+            <Button
+              variant="contained"
+              onClick={handleSplit}
+              disabled={loading}
+              sx={{
+                backgroundColor: '#3f51b5',
+                color: 'white',
+                '&:hover': { backgroundColor: '#303f9f' },
+                padding: '10px 30px',
+
+              }}
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Start Splitting'}
+            </Button>
+          </Box>
+        </>
+      )}
     </Container>
   );
 };

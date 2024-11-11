@@ -1,17 +1,16 @@
-// client/src/Uploader/ImageUploader.js
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Container, Box, Typography, Button, CircularProgress, Alert } from '@mui/material';
-import { PDFDocument } from 'pdf-lib';
 import { saveAs } from 'file-saver';
+import { PDFDocument } from 'pdf-lib';
 
 const ImageUploader = () => {
-  const [selectedFile, setSelectedFile] = useState(null); // Single file state
+  const [selectedFile, setSelectedFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Get the first selected file
+    const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
       setErrorMessage('');
@@ -38,16 +37,11 @@ const ImageUploader = () => {
     }
 
     const page = pdfDoc.addPage([image.width, image.height]);
-    page.drawImage(image, {
-      x: 0,
-      y: 0,
-      width: image.width,
-      height: image.height,
-    });
+    page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    saveAs(blob, `${selectedFile.name.split('.').slice(0, -1).join('.')}.pdf`); // Use original file name
+    saveAs(blob, `${selectedFile.name.split('.').slice(0, -1).join('.')}.pdf`);
 
     setSelectedFile(null); // Reset file selection
   };
@@ -56,7 +50,6 @@ const ImageUploader = () => {
     setLoading(true);
     try {
       await convertImageToPdf();
-    //   alert("Image successfully converted to PDF!");
     } catch (error) {
       console.error('Error converting image:', error);
       setErrorMessage('Error converting image to PDF. Please try again.');
@@ -72,12 +65,19 @@ const ImageUploader = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: 'image/*',
-    multiple: false, // Only allow a single file
+    multiple: false,
   });
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: '100px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: 2 }}>
-      <Typography variant="h4" align="center" gutterBottom>
+    <Container maxWidth="md" sx={{
+      marginTop: '100px',
+      padding: '20px',
+      backgroundColor: '#ffffff',
+      borderRadius: '8px',
+      boxShadow: 3,
+      '@media (max-width: 600px)': { padding: '15px', marginTop: '60px' },
+    }}>
+      <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
         Upload Your Image to Convert to PDF
       </Typography>
 
@@ -89,17 +89,27 @@ const ImageUploader = () => {
         backgroundColor: isDragActive ? '#e3f2fd' : '#f5f5f5',
         marginBottom: '20px',
         transition: 'background-color 0.3s ease',
+        textAlign: 'center',
+        '&:hover': { backgroundColor: '#e1f5fe' },
       }}>
         <input {...getInputProps()} />
         {isDragActive ? (
-          <Typography>Drop the file here ...</Typography>
+          <Typography variant="body1" sx={{ color: '#3f51b5', fontWeight: 'bold' }}>
+            Drop the file here ...
+          </Typography>
         ) : (
-          <Typography>Drag and drop your image here, or click to select the file</Typography>
+          <Typography variant="body1" sx={{ color: '#616161' }}>
+            Drag and drop your image here, or click to select the file
+          </Typography>
         )}
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-        <Button variant="contained" component="label">
+        <Button variant="contained" component="label" sx={{
+          backgroundColor: '#3f51b5',
+          color: 'white',
+          '&:hover': { backgroundColor: '#303f9f' },
+        }}>
           Select File
           <input type="file" hidden onChange={handleFileChange} accept="image/*" />
         </Button>
@@ -123,11 +133,28 @@ const ImageUploader = () => {
           color="primary"
           onClick={handleConvert}
           disabled={!selectedFile || loading}
-          sx={{ width: '80px', mr: 1 }}
+          sx={{
+            width: '100px',
+            padding: '10px',
+            backgroundColor: '#3f51b5',
+            '&:hover': { backgroundColor: '#303f9f' },
+          }}
         >
-          {loading ? <CircularProgress size={24} /> : 'Convert'}
+          {loading ? <CircularProgress size={24} color="inherit" /> : 'Convert'}
         </Button>
-        <Button variant="outlined" onClick={() => setSelectedFile(null)} sx={{ width: '80px' }}>
+
+        <Button
+          variant="outlined"
+          onClick={() => setSelectedFile(null)}
+          sx={{
+            width: '100px',
+            padding: '10px',
+            color: '#3f51b5',
+            borderColor: '#3f51b5',
+            '&:hover': { borderColor: '#303f9f', color: '#303f9f' },
+            marginLeft: '10px',
+          }}
+        >
           Cancel
         </Button>
       </Box>

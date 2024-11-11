@@ -1,4 +1,3 @@
-// client/src/components/ExcelToPdf.js
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
@@ -22,8 +21,12 @@ const ExcelToPdf = () => {
           boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
           transform: 'scale(1.05)',
         },
-        padding: '20px',
+        padding: { xs: '16px', sm: '20px' }, // Responsive padding
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
       }}
     >
       <CardContent>
@@ -36,13 +39,14 @@ const ExcelToPdf = () => {
             alignItems: 'center',
             color: '#3f51b5',
             mb: 1,
+            fontSize: { xs: '1.2rem', sm: '1.5rem' }, // Dynamic font size
           }}
         >
           <TableChartIcon
             sx={{
               mr: 1,
               color: '#3f51b5',
-              fontSize: '2.5rem',
+              fontSize: { xs: '2rem', sm: '2.5rem' }, // Responsive icon size
               transition: 'transform 0.3s ease',
               '&:hover': {
                 transform: 'scale(1.2) rotate(15deg)',
@@ -51,8 +55,8 @@ const ExcelToPdf = () => {
           />
           Excel to PDF
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          Convert your Excel sheets to PDF format.
+        <Typography sx={{ mb: 1.5, fontSize: { xs: '0.9rem', sm: '1rem' } }} color="text.secondary">
+          Convert your Excel sheets to PDF format with ease.
         </Typography>
       </CardContent>
     </Card>

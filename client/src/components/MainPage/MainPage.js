@@ -18,7 +18,19 @@ const MainPage = () => {
       <div className="flowing-shape"></div>
       <div className="flowing-shape"></div>
 
-      <Typography padding="40px" variant="h4" align="center" className="main-title" gutterBottom>
+      <Typography
+        padding="40px"
+        variant="h4"
+        align="center"
+        className="main-title"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          color: '#3f51b5',
+          textTransform: 'uppercase',
+          letterSpacing: 2,
+        }}
+      >
         Welcome to PDF Converter Tools
       </Typography>
 
@@ -28,21 +40,22 @@ const MainPage = () => {
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Box
               sx={{
-                height: 200, // Increased height for advertisement cards
-                backgroundColor: '#FF5722', // Different background color
-                color: 'white', // White text
+                height: 200,
+                backgroundColor: '#FF5722',
+                color: 'white',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: '12px',
                 marginBottom: '20px',
                 boxShadow: 4,
-                transition: 'transform 0.3s, box-shadow 0.3s', // Transition for hover effect
+                transition: 'transform 0.3s, box-shadow 0.3s',
                 '&:hover': {
-                  transform: 'scale(1.05)', // Scale up on hover
-                  boxShadow: 6, // Increase shadow on hover
+                  transform: 'scale(1.05)',
+                  boxShadow: 6,
                 },
-                fontSize: '1.5rem', // Larger font size for advertisement cards
+                fontSize: '1.5rem',
+                fontWeight: 600,
               }}
             >
               <Typography variant="h6">Advertisement {index + 1}</Typography>
@@ -52,83 +65,34 @@ const MainPage = () => {
 
         {/* PDF Converter Tools */}
         <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={12} sm={6} md={4}>
-            <Box sx={{
-              padding: 2,
-              backgroundColor: '#fff', // White background for functional cards
-              borderRadius: '8px',
-              boxShadow: 2,
-              textAlign: 'center',
-            }}>
-              <MergePdf />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box sx={{
-              padding: 2,
-              backgroundColor: '#fff', // White background for functional cards
-              borderRadius: '8px',
-              boxShadow: 2,
-              textAlign: 'center',
-            }}>
-              <SplitPdf />
-            </Box>
-          </Grid>
-          {/* <Grid item xs={12} sm={6} md={4}>
-            <Box sx={{
-              padding: 2,
-              backgroundColor: '#fff', // White background for functional cards
-              borderRadius: '8px',
-              boxShadow: 2,
-              textAlign: 'center',
-            }}>
-              <CompressPdf />
-            </Box>
-          </Grid> */}
-          <Grid item xs={12} sm={6} md={4}>
-            <Box sx={{
-              padding: 2,
-              backgroundColor: '#fff', // White background for functional cards
-              borderRadius: '8px',
-              boxShadow: 2,
-              textAlign: 'center',
-            }}>
-              <ExcelToPdf />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box sx={{
-              padding: 2,
-              backgroundColor: '#fff', // White background for functional cards
-              borderRadius: '8px',
-              boxShadow: 2,
-              textAlign: 'center',
-            }}>
-              <JpgToPdf />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box sx={{
-              padding: 2,
-              backgroundColor: '#fff', // White background for functional cards
-              borderRadius: '8px',
-              boxShadow: 2,
-              textAlign: 'center',
-            }}>
-              <WordToPdf />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box sx={{
-              padding: 2,
-              backgroundColor: '#fff', // White background for functional cards
-              borderRadius: '8px',
-              boxShadow: 2,
-              textAlign: 'center',
-            }}>
-              <PowerPointToPdf />
-            </Box>
-          </Grid>
+          {[{ component: <MergePdf /> },
+            { component: <SplitPdf /> },
+            { component: <ExcelToPdf />,},
+            { component: <JpgToPdf />,  },
+            { component: <WordToPdf />, },
+            { component: <PowerPointToPdf />,  }].map((item, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Box
+                sx={{
+                  padding: 3,
+                  backgroundColor: '#fff',
+                  borderRadius: '8px',
+                  boxShadow: 2,
+                  textAlign: 'center',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    boxShadow: 6,
+                  },
+                }}
+              >
+                <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>
+                  {item.label}
+                </Typography>
+                {item.component}
+              </Box>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
     </Container>

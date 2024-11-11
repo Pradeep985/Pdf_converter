@@ -1,4 +1,3 @@
-// client/src/components/MergePdf.js
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import MergeTypeIcon from '@mui/icons-material/MergeType';
@@ -23,8 +22,12 @@ const MergePdf = () => {
           boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
           transform: 'scale(1.05)',
         },
-        padding: '20px',
+        padding: { xs: '16px', sm: '20px' }, // Responsive padding
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
       }}
     >
       <CardContent>
@@ -37,13 +40,14 @@ const MergePdf = () => {
             alignItems: 'center',
             color: '#3f51b5',
             mb: 1,
+            fontSize: { xs: '1.2rem', sm: '1.5rem' }, // Dynamic font size
           }}
         >
           <MergeTypeIcon
             sx={{
               mr: 1,
               color: '#3f51b5',
-              fontSize: '2.5rem',
+              fontSize: { xs: '2rem', sm: '2.5rem' }, // Responsive icon size
               transition: 'transform 0.3s ease',
               '&:hover': {
                 transform: 'scale(1.2) rotate(15deg)',
@@ -52,8 +56,8 @@ const MergePdf = () => {
           />
           Merge PDF
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          Combine your PDFs into a single document.
+        <Typography sx={{ mb: 1.5, fontSize: { xs: '0.9rem', sm: '1rem' } }} color="text.secondary">
+          Combine multiple PDFs into a single document for easy access and sharing.
         </Typography>
       </CardContent>
     </Card>

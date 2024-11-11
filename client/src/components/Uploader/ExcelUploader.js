@@ -1,4 +1,3 @@
-// client/src/Uploader/ExcelUploader.js
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
@@ -63,30 +62,43 @@ const ExcelUploader = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: '.xls,.xlsx' });
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: '100px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: 2 }}>
-      <Typography variant="h4" align="center" gutterBottom>
+    <Container maxWidth="md" sx={{
+      marginTop: '80px',
+      padding: '30px',
+      backgroundColor: '#ffffff',
+      borderRadius: '10px',
+      boxShadow: 3,
+    }}>
+      <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
         Upload Your Excel File to Convert to PDF
       </Typography>
 
+      {/* Dropzone Area */}
       <Box {...getRootProps()} sx={{
         border: '2px dashed #3f51b5',
         padding: '40px',
         cursor: 'pointer',
-        borderRadius: '8px',
+        borderRadius: '10px',
         backgroundColor: isDragActive ? '#e3f2fd' : '#f5f5f5',
         marginBottom: '20px',
         transition: 'background-color 0.3s ease',
+        textAlign: 'center',
       }}>
         <input {...getInputProps()} />
         {isDragActive ? (
-          <Typography>Drop the files here ...</Typography>
+          <Typography sx={{ color: '#3f51b5', fontWeight: 'bold' }}>Drop the files here ...</Typography>
         ) : (
-          <Typography>Drag and drop an Excel file here, or click to select a file</Typography>
+          <Typography sx={{ color: '#616161' }}>Drag and drop an Excel file here, or click to select a file</Typography>
         )}
       </Box>
 
+      {/* File Selection */}
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-        <Button variant="contained" component="label">
+        <Button variant="contained" component="label" sx={{
+          backgroundColor: '#3f51b5', 
+          color: 'white', 
+          '&:hover': { backgroundColor: '#303f9f' }
+        }}>
           Select File
           <input type="file" hidden onChange={handleFileChange} accept=".xls,.xlsx" />
         </Button>
@@ -98,23 +110,41 @@ const ExcelUploader = () => {
         )}
       </Box>
 
+      {/* Error Message */}
       {error && (
-        <Typography color="error" sx={{ mt: 2 }}>
+        <Typography color="error" sx={{ mt: 2, textAlign: 'center' }}>
           {error}
         </Typography>
       )}
 
-      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+      {/* Convert Button */}
+      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', gap: 2 }}>
         <Button
           variant="contained"
           color="primary"
           onClick={handleConvert}
           disabled={!file || loading}
-          sx={{ width: '80px', mr: 1 }}
+          sx={{
+            width: '150px',
+            padding: '10px',
+            backgroundColor: '#3f51b5',
+            '&:hover': { backgroundColor: '#303f9f' },
+          }}
         >
-          {loading ? <CircularProgress size={24} /> : 'Convert'}
+          {loading ? <CircularProgress size={24} color="inherit" /> : 'Convert'}
         </Button>
-        <Button variant="outlined" onClick={() => setFile(null)} sx={{ width: '80px' }}>
+
+        <Button
+          variant="outlined"
+          onClick={() => setFile(null)}
+          sx={{
+            width: '150px',
+            padding: '10px',
+            color: '#3f51b5',
+            borderColor: '#3f51b5',
+            '&:hover': { borderColor: '#303f9f', color: '#303f9f' },
+          }}
+        >
           Cancel
         </Button>
       </Box>
