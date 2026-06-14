@@ -2,100 +2,101 @@ import React from 'react';
 import { Grid, Container, Typography, Box } from '@mui/material';
 import MergePdf from './MergePdf';
 import SplitPdf from './SplitPdf';
+import RotatePdf from './RotatePdf';
+import WatermarkPdf from './WatermarkPdf';
 import WordToPdf from './WordToPdf';
 import PowerPointToPdf from './PowerPointToPdf';
 import ExcelToPdf from './ExcelToPdf';
 import JpgToPdf from './JpgToPdf';
+import CompressPdf from './CompressPdf';
+import UnlockPdf from './UnlockPdf';
 
 import './MainPage.css';
 
+const tools = [
+  { component: <MergePdf />, key: 'merge' },
+  { component: <SplitPdf />, key: 'split' },
+  { component: <CompressPdf />, key: 'compress' },
+  { component: <UnlockPdf />, key: 'unlock' },
+  { component: <WordToPdf />, key: 'word' },
+  { component: <PowerPointToPdf />, key: 'ppt' },
+  { component: <ExcelToPdf />, key: 'excel' },
+  { component: <JpgToPdf />, key: 'jpg' },
+  { component: <RotatePdf />, key: 'rotate' },
+  { component: <WatermarkPdf />, key: 'watermark' },
+];
+
 const MainPage = () => {
   return (
-    <Container className="cont" sx={{ marginTop: '100px', paddingBottom: '80px' }}>
-      {/* Flowing shapes */}
-      <div className="flowing-shape"></div>
-      <div className="flowing-shape"></div>
-      <div className="flowing-shape"></div>
-      <div className="flowing-shape"></div>
+    <div className="main-wrapper">
+      {/* ——— HERO ——— */}
+      <div className="hero-section">
+        <div className="hero-eyebrow">
+          <span className="hero-eyebrow-dot" />
+          100% Free &amp; Secure PDF Tools
+        </div>
 
-      <Typography
-        padding="40px"
-        variant="h4"
-        align="center"
-        className="main-title"
-        gutterBottom
-        sx={{
-          fontWeight: 'bold',
-          color: '#3f51b5',
-          textTransform: 'uppercase',
-          letterSpacing: 2,
-        }}
-      >
-        Welcome to PDF Converter Tools
-      </Typography>
+        <Typography
+          variant="h1"
+          className="main-title"
+        >
+          Every PDF tool you'll<br />ever need
+        </Typography>
 
-      <Grid container spacing={3} justifyContent="center" sx={{ marginBottom: '40px' }}>
-        {/* Advertisement spaces */}
-        {[...Array(5)].map((_, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Box
-              sx={{
-                height: 200,
-                backgroundColor: '#FF5722',
-                color: 'white',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '12px',
-                marginBottom: '20px',
-                boxShadow: 4,
-                transition: 'transform 0.3s, box-shadow 0.3s',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: 6,
-                },
-                fontSize: '1.5rem',
-                fontWeight: 600,
-              }}
-            >
-              <Typography variant="h6">Advertisement {index + 1}</Typography>
-            </Box>
-          </Grid>
-        ))}
+        <p className="hero-subtitle">
+          Merge, split, compress, convert, rotate, unlock and watermark PDFs with just a few clicks.
+          All processing happens in your browser — your files never leave your device.
+        </p>
 
-        {/* PDF Converter Tools */}
-        <Grid container spacing={3} justifyContent="center">
-          {[{ component: <MergePdf /> },
-            { component: <SplitPdf /> },
-            { component: <ExcelToPdf />,},
-            { component: <JpgToPdf />,  },
-            { component: <WordToPdf />, },
-            { component: <PowerPointToPdf />,  }].map((item, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Box
-                sx={{
-                  padding: 3,
-                  backgroundColor: '#fff',
-                  borderRadius: '8px',
-                  boxShadow: 2,
-                  textAlign: 'center',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                    boxShadow: 6,
-                  },
-                }}
-              >
-                <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>
-                  {item.label}
-                </Typography>
-                {item.component}
-              </Box>
+        <div className="hero-stats">
+          <div className="hero-stat">
+            <span className="hero-stat-number">10+</span>
+            <span className="hero-stat-label">PDF Tools</span>
+          </div>
+          <div className="hero-stat">
+            <span className="hero-stat-number">100%</span>
+            <span className="hero-stat-label">Free Forever</span>
+          </div>
+          <div className="hero-stat">
+            <span className="hero-stat-number">0</span>
+            <span className="hero-stat-label">Data Stored</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ——— TOOLS GRID ——— */}
+      <Container maxWidth="lg" sx={{ pb: 12 }}>
+        <p className="section-label">All Tools</p>
+        <p className="section-title">Pick a tool and get started instantly</p>
+
+        <Grid container spacing={3} justifyContent="center" className="cards-grid">
+          {tools.map((item) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={item.key} sx={{ display: 'flex' }}>
+              {item.component}
             </Grid>
           ))}
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+
+      {/* ——— FEATURES STRIP ——— */}
+      <div style={{ borderTop: '1px solid rgba(0,0,0,0.05)', background: '#fff' }}>
+        <Container maxWidth="lg">
+          <div className="features-strip">
+            {[
+              { icon: '🔒', label: 'Files never uploaded' },
+              { icon: '⚡', label: 'Instant processing' },
+              { icon: '🆓', label: 'Completely free' },
+              { icon: '📱', label: 'Works on all devices' },
+            ].map((f) => (
+              <div className="feature-badge" key={f.label}>
+                <span className="feature-badge-icon">{f.icon}</span>
+                {f.label}
+              </div>
+            ))}
+          </div>
+        </Container>
+      </div>
+    </div>
   );
 };
 

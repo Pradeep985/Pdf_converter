@@ -1,273 +1,143 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Container, Box, Typography, Button, CircularProgress, TextField, MenuItem } from '@mui/material';
+import { Typography, Button, CircularProgress, Alert, TextField, MenuItem } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import './UploaderPage.css';
 
-const UploaderPage = () => {
+const SplitUploader = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [fileName, setFileName] = useState('');
-  const [splitMode, setSplitMode] = useState('splitByRange'); // Either 'splitByRange' or 'extractPages'
-  const [rangeMode, setRangeMode] = useState('custom'); // Either 'custom' or 'fixed'
+  const [splitMode, setSplitMode] = useState('splitByRange');
+  const [rangeMode, setRangeMode] = useState('custom');
   const [customRanges, setCustomRanges] = useState([{ from: 1, to: 1 }]);
-  const [fixedRangeCount, setFixedRangeCount] = useState(2); // Used for fixed ranges
+  const [fixedRangeCount, setFixedRangeCount] = useState(2);
   const [pagesToExtract, setPagesToExtract] = useState('');
-
-  const handleFileChange = (event) => {
-    const uploadedFile = event.target.files[0];
-    if (uploadedFile) {
-      setFile(uploadedFile);
-      setFileName(uploadedFile.name);
-    }
-  };
-
-  const handleAddRange = () => {
-    setCustomRanges([...customRanges, { from: 1, to: 1 }]);
-  };
+  const [error, setError] = useState('');
 
   const handleSplit = async () => {
     if (!file) return;
-
     setLoading(true);
-    const fileReader = new FileReader();
-
-    fileReader.onload = async (e) => {
-      const pdfData = new Uint8Array(e.target.result);
-      const pdfDoc = await PDFDocument.load(pdfData);
+    setError('');
+    try {
+      const pdfData = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(new Uint8Array(pdfData));
       const totalPages = pdfDoc.getPageCount();
 
-      if (splitMode === 'splitByRange') {
-        if (rangeMode === 'custom') {
-          for (let range of customRanges) {
-            const { from, to } = range;
-            const newPdfDoc = await PDFDocument.create();
-            for (let i = from - 1; i < to; i++) {
-              if (i < totalPages) {
-                const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [i]);
-                newPdfDoc.addPage(copiedPage);
-              }
-            }
-            const pdfBytes = await newPdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `split_pages_${from}-${to}.pdf`;
-            link.click();
-            URL.revokeObjectURL(url);
-          }
-        } else if (rangeMode === 'fixed') {
-          // Fixed range splitting
-          for (let i = 0; i < totalPages; i += fixedRangeCount) {
-            const newPdfDoc = await PDFDocument.create();
-            for (let j = i; j < i + fixedRangeCount && j < totalPages; j++) {
-              const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [j]);
-              newPdfDoc.addPage(copiedPage);
-            }
-            const pdfBytes = await newPdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `split_pages_${i + 1}-${Math.min(i + fixedRangeCount, totalPages)}.pdf`;
-            link.click();
-            URL.revokeObjectURL(url);
-          }
-        }
-      } else if (splitMode === 'extractPages') {
-        // Extract pages logic
-        const pages = pagesToExtract.split(',').map(p => parseInt(p.trim(), 10) - 1);
-        const newPdfDoc = await PDFDocument.create();
-        for (let i of pages) {
-          if (i < totalPages) {
-            const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [i]);
-            newPdfDoc.addPage(copiedPage);
-          }
-        }
-        const pdfBytes = await newPdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const downloadPdf = async (newDoc, filename) => {
+        const bytes = await newDoc.save();
+        const blob = new Blob([bytes], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `extracted_pages.pdf`;
-        link.click();
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; a.click();
         URL.revokeObjectURL(url);
+      };
+
+      if (splitMode === 'splitByRange') {
+        const ranges = rangeMode === 'custom' ? customRanges : (() => {
+          const r = [];
+          for (let i = 0; i < totalPages; i += fixedRangeCount)
+            r.push({ from: i + 1, to: Math.min(i + fixedRangeCount, totalPages) });
+          return r;
+        })();
+        for (const { from, to } of ranges) {
+          const newDoc = await PDFDocument.create();
+          for (let i = from - 1; i < to && i < totalPages; i++) {
+            const [p] = await newDoc.copyPages(pdfDoc, [i]);
+            newDoc.addPage(p);
+          }
+          await downloadPdf(newDoc, `split_pages_${from}-${to}.pdf`);
+        }
+      } else {
+        const pages = pagesToExtract.split(',').map(p => parseInt(p.trim(), 10) - 1).filter(i => i >= 0 && i < totalPages);
+        const newDoc = await PDFDocument.create();
+        for (const i of pages) { const [p] = await newDoc.copyPages(pdfDoc, [i]); newDoc.addPage(p); }
+        await downloadPdf(newDoc, 'extracted_pages.pdf');
       }
-
-      setLoading(false);
       setFile(null);
-      setFileName('');
-    };
-
-    fileReader.readAsArrayBuffer(file);
+    } catch (e) {
+      setError('Failed to split PDF. Please ensure the file is a valid PDF.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Dropzone configuration
-  const onDrop = useCallback((acceptedFiles) => {
-    handleFileChange({ target: { files: acceptedFiles } });
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: '.pdf' });
+  const onDrop = useCallback((accepted) => { if (accepted[0]) { setFile(accepted[0]); setError(''); } }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: { 'application/pdf': ['.pdf'] }, multiple: false });
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: '50px', padding: '30px', backgroundColor: '#fff', borderRadius: '10px', boxShadow: 3 }}>
-      <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
-        PDF Splitter & Extractor
-      </Typography>
+    <div className="uploader-page">
+      <div className="uploader-card">
+        <div className="uploader-icon-wrap"><CallSplitIcon /></div>
+        <Typography className="uploader-title">Split PDF</Typography>
+        <p className="uploader-subtitle">Split a PDF into multiple files. Choose by page range or extract specific pages.</p>
 
-      {/* File Upload and Drag-and-Drop */}
-      <Box {...getRootProps()} sx={{
-        border: '2px dashed #3f51b5',
-        padding: '40px',
-        cursor: 'pointer',
-        borderRadius: '8px',
-        backgroundColor: isDragActive ? '#e3f2fd' : '#f5f5f5',
-        marginBottom: '20px',
-        transition: 'background-color 0.3s ease',
-        textAlign: 'center',
-      }}>
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <Typography sx={{ color: '#3f51b5', fontWeight: 'bold' }}>Drop the files here ...</Typography>
-        ) : (
-          <Typography sx={{ color: '#616161' }}>Drag and drop a file here, or click to select a file</Typography>
-        )}
-      </Box>
-
-      <Box sx={{ display: 'flex', mb: 3 }}>
-        <Button variant="contained" component="label" sx={{ backgroundColor: '#3f51b5', color: 'white', '&:hover': { backgroundColor: '#303f9f' } }}>
-          Select File
-          <input type="file" hidden onChange={handleFileChange} accept=".pdf" />
-        </Button>
+        <div {...getRootProps()} className={`drop-zone ${isDragActive ? 'active' : ''}`}>
+          <input {...getInputProps()} />
+          <span className="drop-zone-icon">✂️</span>
+          {isDragActive
+            ? <Typography className="drop-zone-text-active">Release to upload</Typography>
+            : <Typography className="drop-zone-text">Drag &amp; drop a PDF, or <span style={{ color: '#4f46e5', fontWeight: 700 }}>click to browse</span></Typography>}
+          <p className="drop-zone-hint">PDF only</p>
+        </div>
 
         {file && (
-          <Typography variant="body2" sx={{ ml: 2, fontStyle: 'italic', color: 'green' }}>
-            {fileName}
-          </Typography>
+          <div className="selected-file-chip">
+            <PictureAsPdfIcon sx={{ color: '#4f46e5' }} />
+            <Typography className="selected-file-name">{file.name}</Typography>
+            <span style={{ fontSize: '0.8rem', color: '#94a3b8', fontFamily: 'Inter, sans-serif' }}>{(file.size / 1024).toFixed(0)} KB</span>
+          </div>
         )}
-      </Box>
 
-      {/* Only display when a file is uploaded */}
-      {file && (
-        <>
-          <Box sx={{ mb: 3 }}>
-            <TextField
-              select
-              label="Select Mode"
-              value={splitMode}
-              onChange={(e) => setSplitMode(e.target.value)}
-              fullWidth
-              sx={{
-                '& .MuiInputBase-root': { backgroundColor: '#f1f1f1' },
-                '& .MuiOutlinedInput-notchedOutline': { borderColor: '#3f51b5' }
-              }}
-            >
+        {file && (
+          <>
+            <div className="uploader-divider" />
+            <TextField select label="Mode" value={splitMode} onChange={e => setSplitMode(e.target.value)} fullWidth className="styled-input" sx={{ mb: 2 }}>
               <MenuItem value="splitByRange">Split by Range</MenuItem>
               <MenuItem value="extractPages">Extract Pages</MenuItem>
             </TextField>
-          </Box>
 
-          {splitMode === 'splitByRange' && (
-            <>
-              <Box sx={{ mb: 3 }}>
-                <TextField
-                  select
-                  label="Range Mode"
-                  value={rangeMode}
-                  onChange={(e) => setRangeMode(e.target.value)}
-                  fullWidth
-                  sx={{
-                    '& .MuiInputBase-root': { backgroundColor: '#f1f1f1' },
-                    '& .MuiOutlinedInput-notchedOutline': { borderColor: '#3f51b5' }
-                  }}
-                >
+            {splitMode === 'splitByRange' && (
+              <>
+                <TextField select label="Range Type" value={rangeMode} onChange={e => setRangeMode(e.target.value)} fullWidth className="styled-input" sx={{ mb: 2 }}>
                   <MenuItem value="custom">Custom Ranges</MenuItem>
-                  <MenuItem value="fixed">Fixed Ranges</MenuItem>
+                  <MenuItem value="fixed">Fixed Interval</MenuItem>
                 </TextField>
-              </Box>
 
-              {rangeMode === 'custom' ? (
-                <>
-                  {customRanges.map((range, index) => (
-                    <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                      <TextField
-                        label="From Page"
-                        type="number"
-                        value={range.from}
-                        onChange={(e) => {
-                          const newRanges = [...customRanges];
-                          newRanges[index].from = parseInt(e.target.value, 10);
-                          setCustomRanges(newRanges);
-                        }}
-                        fullWidth
-                        sx={{ backgroundColor: '#f1f1f1' }}
-                      />
-                      <TextField
-                        label="To Page"
-                        type="number"
-                        value={range.to}
-                        onChange={(e) => {
-                          const newRanges = [...customRanges];
-                          newRanges[index].to = parseInt(e.target.value, 10);
-                          setCustomRanges(newRanges);
-                        }}
-                        fullWidth
-                        sx={{ backgroundColor: '#f1f1f1' }}
-                      />
-                    </Box>
-                  ))}
-                  <Button variant="outlined" onClick={handleAddRange} sx={{ backgroundColor: '#3f51b5', color: 'white', '&:hover': { backgroundColor: '#303f9f' } }}>
-                    Add Range
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <TextField
-                    label="Fixed Range Size"
-                    type="number"
-                    value={fixedRangeCount}
-                    onChange={(e) => setFixedRangeCount(parseInt(e.target.value, 10))}
-                    fullWidth
-                    sx={{ backgroundColor: '#f1f1f1', mt: 2 }}
-                  />
-                </>
-              )}
-            </>
-          )}
+                {rangeMode === 'custom' ? (
+                  <>
+                    {customRanges.map((range, i) => (
+                      <div key={i} style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
+                        <TextField label="From" type="number" value={range.from} onChange={e => { const r = [...customRanges]; r[i].from = +e.target.value; setCustomRanges(r); }} fullWidth className="styled-input" />
+                        <TextField label="To" type="number" value={range.to} onChange={e => { const r = [...customRanges]; r[i].to = +e.target.value; setCustomRanges(r); }} fullWidth className="styled-input" />
+                      </div>
+                    ))}
+                    <Button onClick={() => setCustomRanges([...customRanges, { from: 1, to: 1 }])} sx={{ mb: 2, textTransform: 'none', fontFamily: 'Inter, sans-serif', fontWeight: 600, color: '#4f46e5' }}>+ Add Range</Button>
+                  </>
+                ) : (
+                  <TextField label="Pages per split" type="number" value={fixedRangeCount} onChange={e => setFixedRangeCount(+e.target.value)} fullWidth className="styled-input" sx={{ mb: 2 }} />
+                )}
+              </>
+            )}
 
-          {splitMode === 'extractPages' && (
-            <Box sx={{ mb: 3 }}>
-              <TextField
-                label="Pages to Extract (comma separated)"
-                value={pagesToExtract}
-                onChange={(e) => setPagesToExtract(e.target.value)}
-                fullWidth
-                sx={{ backgroundColor: '#f1f1f1' }}
-              />
-            </Box>
-          )}
+            {splitMode === 'extractPages' && (
+              <TextField label="Pages to extract (e.g. 1, 3, 5)" value={pagesToExtract} onChange={e => setPagesToExtract(e.target.value)} fullWidth className="styled-input" sx={{ mb: 2 }} />
+            )}
+          </>
+        )}
 
-          {/* Start splitting button */}
-          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 ,paddingTop: "10px"}}>
-            <Button
-              variant="contained"
-              onClick={handleSplit}
-              disabled={loading}
-              sx={{
-                backgroundColor: '#3f51b5',
-                color: 'white',
-                '&:hover': { backgroundColor: '#303f9f' },
-                padding: '10px 30px',
+        {error && <Alert severity="error" sx={{ mb: 2, borderRadius: '10px' }}>{error}</Alert>}
 
-              }}
-            >
-              {loading ? <CircularProgress size={24} color="inherit" /> : 'Start Splitting'}
-            </Button>
-          </Box>
-        </>
-      )}
-    </Container>
+        <div className="action-row">
+          <Button className="btn-secondary" onClick={() => setFile(null)}>Clear</Button>
+          <Button className="btn-primary" onClick={handleSplit} disabled={!file || loading}>
+            {loading ? <CircularProgress size={20} color="inherit" /> : 'Split PDF'}
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default UploaderPage;
+export default SplitUploader;

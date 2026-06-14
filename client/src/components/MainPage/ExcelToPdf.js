@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
 import TableChartIcon from '@mui/icons-material/TableChart';
 
 const ExcelToPdf = () => {
+  const navigate = useNavigate();
   const handleCardClick = () => {
-    window.open('/excel-to-pdf', '_blank');
+    navigate('/excel-to-pdf');
   };
 
   return (

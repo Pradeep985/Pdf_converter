@@ -1,11 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 
 const PowerPointToPdf = () => {
+  const navigate = useNavigate();
   const handleCardClick = () => {
     // Open the PptUploader page in a new tab
-    window.open('/ppt-to-pdf', '_blank');
+    navigate('/ppt-to-pdf');
   };
 
   return (

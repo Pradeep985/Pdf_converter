@@ -1,11 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 
 const WordToPdf = () => {
+  const navigate = useNavigate();
   const handleCardClick = () => {
     // Open the Word to PDF page in a new tab
-    window.open('/word-to-pdf', '_blank');
+    navigate('/word-to-pdf');
   };
 
   return (

@@ -1,11 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 
 const SplitPdf = () => {
+  const navigate = useNavigate();
   const handleClick = () => {
     // Open the Split PDF page in a new tab
-    window.open('/split-pdf', '_blank');
+    navigate('/split-pdf');
   };
 
   return (

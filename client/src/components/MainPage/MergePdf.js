@@ -1,11 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
 import MergeTypeIcon from '@mui/icons-material/MergeType';
 
 const MergePdf = () => {
+  const navigate = useNavigate();
   const handleCardClick = () => {
     // Open the MergeUploader page in a new tab
-    window.open('/merge-pdf', '_blank');
+    navigate('/merge-pdf');
   };
 
   return (
