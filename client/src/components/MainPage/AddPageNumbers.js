@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography } from '@mui/material';
 import PinIcon from '@mui/icons-material/Pin';

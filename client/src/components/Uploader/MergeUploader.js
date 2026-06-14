@@ -17,11 +17,10 @@ const MergeUploader = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const addFiles = (newFiles) => {
-    const combined = [...selectedFiles, ...newFiles].slice(0, MAX_FILES);
-    setSelectedFiles(combined);
+  const addFiles = useCallback((newFiles) => {
+    setSelectedFiles(prev => [...prev, ...newFiles].slice(0, MAX_FILES));
     setErrorMessage('');
-  };
+  }, []);
 
   const handleMerge = async () => {
     if (selectedFiles.length < 2) {

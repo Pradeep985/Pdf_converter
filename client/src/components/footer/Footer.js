@@ -75,9 +75,9 @@ const Footer = () => {
             © {year} PDFStudio. All rights reserved.
           </div>
           <div className="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Contact Us</a>
+            <a href="/">Privacy Policy</a>
+            <a href="/">Terms of Service</a>
+            <a href="/">Contact Us</a>
           </div>
         </div>
       </div>

@@ -1,12 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Card, CardContent } from '@mui/material';
+import { Typography, Card, CardContent } from '@mui/material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const JpgToPdf = () => {
   const navigate = useNavigate();
   const handleCardClick = () => {
-    // Open the ImageUploader page in a new tab
     navigate('/image-to-pdf');
   };
 
