@@ -2,15 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Header.css';
 
-const menuItems = [
-  { label: 'Merge PDF', link: '/merge-pdf' },
-  { label: 'Split PDF', link: '/split-pdf' },
-  { label: 'Compress PDF', link: '/compress-pdf' },
-  { label: 'Word to PDF', link: '/word-to-pdf' },
-  { label: 'Excel to PDF', link: '/excel-to-pdf' },
-  { label: 'PPT to PDF', link: '/ppt-to-pdf' },
-  { label: 'Image to PDF', link: '/image-to-pdf' },
-  { label: 'Unlock PDF', link: '/unlock-pdf' },
+const categories = [
+  {
+    title: 'Organize PDF',
+    links: [
+      { label: 'Merge PDF', path: '/merge-pdf' },
+      { label: 'Split PDF', path: '/split-pdf' },
+      { label: 'Remove Pages', path: '/remove-pages' },
+      { label: 'Organize PDF', path: '/organize-pdf' },
+    ]
+  },
+  {
+    title: 'Optimize PDF',
+    links: [
+      { label: 'Compress PDF', path: '/compress-pdf' },
+      { label: 'Repair PDF', path: '/repair-pdf' },
+    ]
+  },
+  {
+    title: 'Convert to PDF',
+    links: [
+      { label: 'JPG to PDF', path: '/image-to-pdf' },
+      { label: 'Word to PDF', path: '/word-to-pdf' },
+      { label: 'PowerPoint to PDF', path: '/ppt-to-pdf' },
+      { label: 'Excel to PDF', path: '/excel-to-pdf' },
+      { label: 'HTML to PDF', path: '/html-to-pdf' },
+    ]
+  },
+  {
+    title: 'Convert from PDF',
+    links: [
+      { label: 'PDF to JPG', path: '/pdf-to-jpg' },
+      { label: 'PDF to Word', path: '/pdf-to-word' },
+    ]
+  },
+  {
+    title: 'Edit PDF',
+    links: [
+      { label: 'Rotate PDF', path: '/rotate-pdf' },
+      { label: 'Add Page Numbers', path: '/add-page-numbers' },
+      { label: 'Watermark PDF', path: '/watermark-pdf' },
+    ]
+  },
+  {
+    title: 'PDF Security',
+    links: [
+      { label: 'Unlock PDF', path: '/unlock-pdf' },
+      { label: 'Protect PDF', path: '/protect-pdf' },
+      { label: 'Sign PDF', path: '/sign-pdf' },
+    ]
+  }
 ];
 
 function Header() {
@@ -18,6 +59,7 @@ function Header() {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -25,8 +67,11 @@ function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close drawer on route change
-  useEffect(() => { setMenuOpen(false); }, [location]);
+  // Close menus on route change
+  useEffect(() => { 
+    setMenuOpen(false); 
+    setMegaMenuOpen(false);
+  }, [location]);
 
   return (
     <>
@@ -48,15 +93,43 @@ function Header() {
 
           {/* Desktop Nav */}
           <nav className="desktop-nav">
-            {menuItems.map((item) => (
-              <button
-                key={item.link}
-                onClick={() => navigate(item.link)}
-                className={`nav-link ${location.pathname === item.link ? 'active' : ''}`}
-              >
-                {item.label}
+            <div 
+              className="mega-menu-trigger"
+              onMouseEnter={() => setMegaMenuOpen(true)}
+              onMouseLeave={() => setMegaMenuOpen(false)}
+            >
+              <button className="nav-link dropdown-btn">
+                All PDF Tools <span className="chevron">▼</span>
               </button>
-            ))}
+              
+              {/* Mega Menu */}
+              {megaMenuOpen && (
+                <div className="mega-menu">
+                  <div className="mega-menu-grid">
+                    {categories.map((cat, idx) => (
+                      <div key={idx} className="mega-menu-column">
+                        <h4 className="mega-menu-title">{cat.title}</h4>
+                        <ul className="mega-menu-list">
+                          {cat.links.map(link => (
+                            <li key={link.path}>
+                              <button 
+                                onClick={() => navigate(link.path)}
+                                className={`mega-menu-link ${location.pathname === link.path ? 'active' : ''}`}
+                              >
+                                {link.label}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <button className={`nav-link ${location.pathname === '/compress-pdf' ? 'active' : ''}`} onClick={() => navigate('/compress-pdf')}>Compress</button>
+            <button className={`nav-link ${location.pathname === '/merge-pdf' ? 'active' : ''}`} onClick={() => navigate('/merge-pdf')}>Merge</button>
+            <button className={`nav-link ${location.pathname === '/split-pdf' ? 'active' : ''}`} onClick={() => navigate('/split-pdf')}>Split</button>
           </nav>
 
           {/* Mobile hamburger */}
@@ -75,14 +148,21 @@ function Header() {
       {/* Mobile Drawer */}
       <div className={`mobile-drawer ${menuOpen ? 'open' : ''}`}>
         <div className="mobile-drawer-inner">
-          {menuItems.map((item) => (
-            <button
-              key={item.link}
-              onClick={() => navigate(item.link)}
-              className={`mobile-nav-link ${location.pathname === item.link ? 'active' : ''}`}
-            >
-              {item.label}
-            </button>
+          {categories.map((cat, idx) => (
+            <div key={idx} className="mobile-category">
+              <h4 className="mobile-category-title">{cat.title}</h4>
+              <div className="mobile-links-grid">
+                {cat.links.map(link => (
+                  <button
+                    key={link.path}
+                    onClick={() => navigate(link.path)}
+                    className={`mobile-nav-link ${location.pathname === link.path ? 'active' : ''}`}
+                  >
+                    {link.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
