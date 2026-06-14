@@ -19,7 +19,7 @@ const WordUploader = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post((process.env.REACT_APP_API_URL || 'http://localhost:5000')/api/word/word-to-pdf', formData, { responseType: 'blob' });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/word/word-to-pdf`, formData, { responseType: 'blob' });
       const blob = new Blob([response.data], { type: 'application/pdf' });
       saveAs(blob, `${file.name.split('.').slice(0, -1).join('.')}.pdf`);
       setFile(null);

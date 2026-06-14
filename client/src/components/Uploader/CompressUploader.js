@@ -18,7 +18,7 @@ const CompressUploader = () => {
     const formData = new FormData();
     formData.append('pdfFile', selectedFile);
     try {
-      const response = await axios.post((process.env.REACT_APP_API_URL || 'http://localhost:5000')/compress-pdf', formData, { responseType: 'blob' });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/compress-pdf`, formData, { responseType: 'blob' });
       saveAs(new Blob([response.data], { type: 'application/pdf' }), `compressed_${selectedFile.name}`);
       setSelectedFile(null);
     } catch (error) {

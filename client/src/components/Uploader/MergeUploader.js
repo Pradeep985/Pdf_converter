@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Typography, Button, CircularProgress, Alert, TextField } from '@mui/material';
+import { Typography, Button, CircularProgress, Alert, } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { saveAs } from 'file-saver';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -17,11 +17,10 @@ const MergeUploader = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const addFiles = (newFiles) => {
-    const combined = [...selectedFiles, ...newFiles].slice(0, MAX_FILES);
-    setSelectedFiles(combined);
+  const addFiles = useCallback((newFiles) => {
+    setSelectedFiles(prev => [...prev, ...newFiles].slice(0, MAX_FILES));
     setErrorMessage('');
-  };
+  }, []);
 
   const handleMerge = async () => {
     if (selectedFiles.length < 2) {
@@ -56,7 +55,7 @@ const MergeUploader = () => {
     setSelectedFiles(items);
   };
 
-  const onDrop = useCallback((accepted) => addFiles(accepted), [selectedFiles]);
+  const onDrop = useCallback((accepted) => addFiles(accepted), [addFiles]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

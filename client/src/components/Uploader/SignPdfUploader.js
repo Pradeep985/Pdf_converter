@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Typography, Button, CircularProgress, Alert, TextField } from '@mui/material';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
@@ -30,7 +30,7 @@ const SignPdfUploader = () => {
       const font = await doc.embedFont(StandardFonts.TimesRomanItalic);
       const pages = doc.getPages();
       const lastPage = pages[pages.length - 1];
-      const { width, height } = lastPage.getSize();
+      const { width } = lastPage.getSize();
       const fontSize = 20;
       const textWidth = font.widthOfTextAtSize(signText, fontSize);
       const margin = 36;

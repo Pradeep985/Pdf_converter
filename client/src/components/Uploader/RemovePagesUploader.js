@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Typography, Button, CircularProgress, Alert, Checkbox } from '@mui/material';
+import { Typography, Button, CircularProgress, Alert, } from '@mui/material';
 import { PDFDocument } from 'pdf-lib';
 import { saveAs } from 'file-saver';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
