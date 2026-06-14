@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ===================================================
-   MAIN PAGE - Production Ready
+   MAIN PAGE - Premium Modern UI with Corporate Colors
    =================================================== */
 
 .main-wrapper {
   min-height: 100vh;
   background: #f8fafc;
-  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 84, 166, 0.08) 0%, transparent 70%);
+  font-family: 'Inter', sans-serif;
 }
 
 /* ——— HERO ——— */
@@ -20,13 +21,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(79, 70, 229, 0.08);
-  border: 1px solid rgba(79, 70, 229, 0.2);
+  background: rgba(0, 84, 166, 0.08);
+  border: 1px solid rgba(0, 84, 166, 0.2);
   border-radius: 999px;
   padding: 6px 16px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #4f46e5;
+  color: #0054a6;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 20px;
@@ -35,7 +36,7 @@
 .hero-eyebrow-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: #4f46e5;
+  background: #0054a6;
   animation: pulse-dot 2s infinite;
 }
 
@@ -48,11 +49,10 @@
   font-size: clamp(2.2rem, 4.5vw, 3.6rem) !important;
   font-weight: 900 !important;
   line-height: 1.1 !important;
-  letter-spacing: -2px !important;
+  letter-spacing: -1.5px !important;
   margin-bottom: 20px !important;
   font-family: 'Inter', sans-serif !important;
-  text-shadow: none !important;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #4f46e5 100%) !important;
+  background: linear-gradient(135deg, #001e36 0%, #0054a6 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
@@ -78,7 +78,7 @@
 .hero-stat-number {
   font-size: 1.75rem;
   font-weight: 800;
-  color: #4f46e5;
+  color: #0054a6;
   letter-spacing: -1px;
   font-family: 'Inter', sans-serif;
   display: block;
@@ -94,6 +94,8 @@
 /* ——— CATEGORY SECTIONS ——— */
 .tools-section {
   padding: 16px 0 96px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .category-block {
@@ -103,41 +105,42 @@
 .category-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 24px;
   padding-bottom: 12px;
   border-bottom: 2px solid #f1f5f9;
 }
 
 .category-icon-wrap {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
 }
 
 .category-title {
   font-family: 'Inter', sans-serif !important;
-  font-size: 0.75rem !important;
+  font-size: 0.85rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  color: #94a3b8 !important;
+  color: #475569 !important;
 }
 
 /* ——— TOOL CARDS ——— */
 .cards-grid .MuiCard-root {
   background: #ffffff !important;
-  border-radius: 14px !important;
-  border: 1px solid rgba(0, 0, 0, 0.05) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   height: 100% !important;
-  min-height: 130px !important;
+  min-height: 140px !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -153,17 +156,17 @@
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  height: 4px;
+  background: linear-gradient(90deg, #001e36, #0054a6);
   transform: scaleX(0);
   transition: transform 0.3s ease;
   transform-origin: left;
 }
 
 .cards-grid .MuiCard-root:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 16px 32px -8px rgba(79, 70, 229, 0.18) !important;
-  border-color: rgba(79, 70, 229, 0.1) !important;
+  transform: translateY(-6px) !important;
+  box-shadow: 0 20px 40px -10px rgba(0, 84, 166, 0.15) !important;
+  border-color: rgba(0, 84, 166, 0.15) !important;
 }
 
 .cards-grid .MuiCard-root:hover::before {
@@ -175,20 +178,19 @@
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
-  padding: 20px 16px !important;
+  padding: 24px 16px !important;
   width: 100% !important;
 }
 
 .cards-grid .MuiSvgIcon-root {
-  font-size: 2rem !important;
-  margin-bottom: 10px !important;
-  margin-right: 0 !important;
-  color: #4f46e5 !important;
-  transition: transform 0.25s ease !important;
+  font-size: 2.2rem !important;
+  margin-bottom: 12px !important;
+  color: #0054a6 !important;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 .cards-grid .MuiCard-root:hover .MuiSvgIcon-root {
-  transform: scale(1.12) !important;
+  transform: scale(1.15) !important;
 }
 
 .cards-grid .MuiTypography-h5 {
@@ -197,17 +199,17 @@
   align-items: center !important;
   font-weight: 700 !important;
   color: #0f172a !important;
-  margin-bottom: 6px !important;
+  margin-bottom: 8px !important;
   font-family: 'Inter', sans-serif !important;
-  font-size: 0.95rem !important;
+  font-size: 1.05rem !important;
   letter-spacing: -0.2px !important;
 }
 
 .cards-grid .MuiTypography-root.MuiTypography-body1,
 .cards-grid p.MuiTypography-root {
   color: #64748b !important;
-  font-size: 0.8rem !important;
-  line-height: 1.45 !important;
+  font-size: 0.85rem !important;
+  line-height: 1.5 !important;
   font-family: 'Inter', sans-serif !important;
   margin: 0 !important;
 }
@@ -220,19 +222,20 @@
   padding: 40px 24px;
   flex-wrap: wrap;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
-  background: #fff;
+  background: #ffffff;
 }
 
 .feature-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: #f8fafc;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  padding: 10px 18px;
+  border-radius: 12px;
+  padding: 12px 20px;
   font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #374151;
+  color: #334155;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
