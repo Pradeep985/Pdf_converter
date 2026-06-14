@@ -104,7 +104,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const url = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const url = process.env.REACT_APP_API_URL || 'https://pdfstudio-backend.onrender.com';
         const res = await axios.get(`${url}/api/stats`);
         if (res.data) setStats(res.data);
       } catch (err) {
