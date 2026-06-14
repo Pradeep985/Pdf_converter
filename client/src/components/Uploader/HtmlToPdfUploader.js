@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Button, CircularProgress, Alert, TextField } from '@mui/material';
+import { Typography, Button, CircularProgress, TextField } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
 import './UploaderPage.css';
 

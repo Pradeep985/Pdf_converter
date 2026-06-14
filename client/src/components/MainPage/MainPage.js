@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Container, Typography, Box } from '@mui/material';
+import { Grid, Container, Typography } from '@mui/material';
 import axios from 'axios';
 import './MainPage.css';
 

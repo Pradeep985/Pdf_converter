@@ -19,7 +19,7 @@ const PptUploader = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post((process.env.REACT_APP_API_URL || 'http://localhost:5000')/api/powerpoint-to-pdf/ppt-to-pdf', formData, { responseType: 'blob' });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/powerpoint-to-pdf/ppt-to-pdf`, formData, { responseType: 'blob' });
       saveAs(new Blob([response.data], { type: 'application/pdf' }), `${file.name.split('.').slice(0, -1).join('.')}.pdf`);
       setFile(null);
     } catch (err) {
