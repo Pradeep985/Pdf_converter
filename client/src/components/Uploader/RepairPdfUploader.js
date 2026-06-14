@@ -18,7 +18,7 @@ const RepairPdfUploader = () => {
     const formData = new FormData();
     formData.append('pdfFile', file);
     try {
-      const response = await axios.post('http://localhost:5000/repair-pdf', formData, { responseType: 'blob' });
+      const response = await axios.post((process.env.REACT_APP_API_URL || 'http://localhost:5000')/repair-pdf', formData, { responseType: 'blob' });
       saveAs(new Blob([response.data], { type: 'application/pdf' }), `repaired_${file.name}`);
       setFile(null);
     } catch {

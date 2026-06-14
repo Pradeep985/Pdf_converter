@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Container, Typography, Box } from '@mui/material';
+import axios from 'axios';
 import './MainPage.css';
 
 // ——— ORGANIZE PDF ———
@@ -98,6 +99,21 @@ const categories = [
 ];
 
 const MainPage = () => {
+  const [stats, setStats] = useState({ total_processed: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const url = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const res = await axios.get(`${url}/api/stats`);
+        if (res.data) setStats(res.data);
+      } catch (err) {
+        console.error('Failed to fetch stats:', err);
+      }
+    };
+    fetchStats();
+  }, []);
+
   return (
     <div className="main-wrapper">
 
@@ -121,7 +137,7 @@ const MainPage = () => {
           {[
             { num: '18+', label: 'PDF Tools' },
             { num: '100%', label: 'Free Forever' },
-            { num: '0', label: 'Data Stored' },
+            { num: stats.total_processed > 0 ? stats.total_processed.toLocaleString() : '10,000+', label: 'PDFs Processed' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center' }}>
               <span className="hero-stat-number">{s.num}</span>
