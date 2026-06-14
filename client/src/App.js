@@ -4,6 +4,7 @@ import ScrollToTop from './ScrollToTop';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import MainPage from './components/MainPage/MainPage';
+
 import MergeUploader from './components/Uploader/MergeUploader';
 import SplitUploader from './components/Uploader/SplitUploader';
 import WordUploader from './components/Uploader/WordUploader';
@@ -14,6 +15,15 @@ import RotateUploader from './components/Uploader/RotateUploader';
 import WatermarkUploader from './components/Uploader/WatermarkUploader';
 import UnlockUploader from './components/Uploader/UnlockUploader';
 import CompressUploader from './components/Uploader/CompressUploader';
+import RemovePagesUploader from './components/Uploader/RemovePagesUploader';
+import OrganizePdfUploader from './components/Uploader/OrganizePdfUploader';
+import AddPageNumbersUploader from './components/Uploader/AddPageNumbersUploader';
+import ProtectPdfUploader from './components/Uploader/ProtectPdfUploader';
+import SignPdfUploader from './components/Uploader/SignPdfUploader';
+import PdfToJpgUploader from './components/Uploader/PdfToJpgUploader';
+import RepairPdfUploader from './components/Uploader/RepairPdfUploader';
+import HtmlToPdfUploader from './components/Uploader/HtmlToPdfUploader';
+import PdfToWordUploader from './components/Uploader/PdfToWordUploader';
 
 const App = () => {
   return (
@@ -33,6 +43,16 @@ const App = () => {
           <Route path="/watermark-pdf" element={<WatermarkUploader />} />
           <Route path="/unlock-pdf" element={<UnlockUploader />} />
           <Route path="/compress-pdf" element={<CompressUploader />} />
+          
+          <Route path="/remove-pages" element={<RemovePagesUploader />} />
+          <Route path="/organize-pdf" element={<OrganizePdfUploader />} />
+          <Route path="/add-page-numbers" element={<AddPageNumbersUploader />} />
+          <Route path="/protect-pdf" element={<ProtectPdfUploader />} />
+          <Route path="/sign-pdf" element={<SignPdfUploader />} />
+          <Route path="/pdf-to-jpg" element={<PdfToJpgUploader />} />
+          <Route path="/repair-pdf" element={<RepairPdfUploader />} />
+          <Route path="/html-to-pdf" element={<HtmlToPdfUploader />} />
+          <Route path="/pdf-to-word" element={<PdfToWordUploader />} />
         </Routes>
       </main>
       <Footer />

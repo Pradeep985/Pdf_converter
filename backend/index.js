@@ -21,7 +21,9 @@ if (!fs.existsSync(uploadsDir)) {
 app.use('/api', excelRouter);
 app.use('/api/powerpoint-to-pdf', powerpointRoutes);
 app.use('/api/word', wordToPdfRouter);
+app.use('/api', require('./routes/pdfToWord'));
 app.use('/', require('./routes/compress'));
+app.use('/', require('./routes/repair'));
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

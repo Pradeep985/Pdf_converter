@@ -2,63 +2,84 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './footer.css';
 
-const toolLinks = [
-  { label: 'Merge PDF', link: '/merge-pdf' },
-  { label: 'Split PDF', link: '/split-pdf' },
-  { label: 'Compress PDF', link: '/compress-pdf' },
-  { label: 'Unlock PDF', link: '/unlock-pdf' },
-  { label: 'Rotate PDF', link: '/rotate-pdf' },
-  { label: 'Watermark PDF', link: '/watermark-pdf' },
-  { label: 'Word to PDF', link: '/word-to-pdf' },
-  { label: 'Excel to PDF', link: '/excel-to-pdf' },
-  { label: 'PPT to PDF', link: '/ppt-to-pdf' },
-  { label: 'Image to PDF', link: '/image-to-pdf' },
-];
-
 const Footer = () => {
   const navigate = useNavigate();
   const year = new Date().getFullYear();
 
   return (
     <footer className="site-footer">
-      <div className="footer-inner">
-        {/* Brand Column */}
-        <div className="footer-brand">
-          <button className="footer-logo" onClick={() => navigate('/')}>
-            <div className="footer-logo-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-              </svg>
+      <div className="footer-top">
+        <div className="footer-grid">
+          {/* Brand Column */}
+          <div className="footer-brand">
+            <div className="footer-logo">
+              <div className="footer-logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+              </div>
+              <span className="footer-logo-text">PDF<span className="footer-logo-accent">Studio</span></span>
             </div>
-            <span>PDF<span style={{ color: '#4f46e5' }}>Studio</span></span>
-          </button>
-          <p className="footer-brand-desc">
-            Free, powerful PDF tools that work entirely in your browser. No file uploads, no data stored. Built for privacy.
-          </p>
-          <div className="footer-badges">
-            <span className="footer-badge">🔒 Private</span>
-            <span className="footer-badge">⚡ Fast</span>
-            <span className="footer-badge">🆓 Free</span>
+            <p className="footer-description">
+              Every tool you need to work with PDFs in one place. All tools are 100% free and process files securely in your browser.
+            </p>
+            <div className="footer-socials">
+              <button className="social-btn">X</button>
+              <button className="social-btn">in</button>
+              <button className="social-btn">gh</button>
+            </div>
           </div>
-        </div>
 
-        {/* Tools Column */}
-        <div className="footer-links-col">
-          <h4 className="footer-col-title">PDF Tools</h4>
-          <div className="footer-links-grid">
-            {toolLinks.map((t) => (
-              <button key={t.link} className="footer-link" onClick={() => navigate(t.link)}>
-                {t.label}
-              </button>
-            ))}
+          {/* Column 1 */}
+          <div className="footer-col">
+            <h4>Organize & Edit</h4>
+            <ul>
+              <li><button onClick={() => navigate('/merge-pdf')} className="footer-link-btn">Merge PDF</button></li>
+              <li><button onClick={() => navigate('/split-pdf')} className="footer-link-btn">Split PDF</button></li>
+              <li><button onClick={() => navigate('/remove-pages')} className="footer-link-btn">Remove Pages</button></li>
+              <li><button onClick={() => navigate('/organize-pdf')} className="footer-link-btn">Organize PDF</button></li>
+              <li><button onClick={() => navigate('/rotate-pdf')} className="footer-link-btn">Rotate PDF</button></li>
+            </ul>
+          </div>
+
+          {/* Column 2 */}
+          <div className="footer-col">
+            <h4>Convert</h4>
+            <ul>
+              <li><button onClick={() => navigate('/image-to-pdf')} className="footer-link-btn">JPG to PDF</button></li>
+              <li><button onClick={() => navigate('/word-to-pdf')} className="footer-link-btn">Word to PDF</button></li>
+              <li><button onClick={() => navigate('/pdf-to-word')} className="footer-link-btn">PDF to Word</button></li>
+              <li><button onClick={() => navigate('/pdf-to-jpg')} className="footer-link-btn">PDF to JPG</button></li>
+              <li><button onClick={() => navigate('/html-to-pdf')} className="footer-link-btn">HTML to PDF</button></li>
+            </ul>
+          </div>
+
+          {/* Column 3 */}
+          <div className="footer-col">
+            <h4>Security & Optimize</h4>
+            <ul>
+              <li><button onClick={() => navigate('/compress-pdf')} className="footer-link-btn">Compress PDF</button></li>
+              <li><button onClick={() => navigate('/repair-pdf')} className="footer-link-btn">Repair PDF</button></li>
+              <li><button onClick={() => navigate('/unlock-pdf')} className="footer-link-btn">Unlock PDF</button></li>
+              <li><button onClick={() => navigate('/protect-pdf')} className="footer-link-btn">Protect PDF</button></li>
+              <li><button onClick={() => navigate('/sign-pdf')} className="footer-link-btn">Sign PDF</button></li>
+            </ul>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p className="footer-copy">© {year} PDFStudio. All rights reserved.</p>
-        <p className="footer-tagline">Crafted with ❤️ for productivity</p>
+        <div className="footer-bottom-inner">
+          <div className="footer-copyright">
+            © {year} PDFStudio. All rights reserved.
+          </div>
+          <div className="footer-legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+          </div>
+        </div>
       </div>
     </footer>
   );
