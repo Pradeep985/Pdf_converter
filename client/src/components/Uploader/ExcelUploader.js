@@ -21,7 +21,7 @@ const ExcelUploader = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('http://localhost:5000/api/excel-to-pdf', formData, { responseType: 'blob' });
+      const response = await axios.post((process.env.REACT_APP_API_URL || 'http://localhost:5000')/api/excel-to-pdf', formData, { responseType: 'blob' });
       saveAs(new Blob([response.data], { type: 'application/pdf' }), `${file.name.replace(/\.[^/.]+$/, '')}.pdf`);
       setFile(null);
     } catch (err) {
